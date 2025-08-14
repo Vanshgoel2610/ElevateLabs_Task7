@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Student {
     // conn establish
@@ -10,6 +7,10 @@ public class Student {
     // conn close
 
     // Create DB
+    public void createTable() {
+
+    }
+
     public void createDB() {
         try {
             String url = "jdbc:mysql://localhost:3306/vansh";
@@ -28,10 +29,6 @@ public class Student {
         }
     }
 
-    public void createTable() {
-
-    }
-
 //    Create
     public void createData() {
         try {
@@ -46,6 +43,8 @@ public class Student {
             pstm.setString(2, "vansh");
             pstm.setString(3, "goelv2610@gmail.com");
             pstm.execute();
+//            OR
+//            pstm.executeUpdate();
             System.out.println("data inserted");
             conn.close();
         } catch(Exception e) {
@@ -61,16 +60,62 @@ public class Student {
             String password = "Vansh@2610";
             Connection conn = DriverManager.getConnection(url, userName, password);
 
-            String query = "INSERT into student (sid, sname, semail) VALUES (?, ?, ?)";
+            String query = "UPDATE student set sid = ? where sname = ?";
             PreparedStatement pstm = conn.prepareStatement(query);
-            pstm.setInt(1, 1);
-            pstm.setString(2, "Vansh");
-            pstm.setString(3, "goelvansh770@gmail.com");
-            pstm.executeUpdate();
-            System.out.println("data inserted");
+            pstm.setInt(1, 5);
+            pstm.setString(2, "vansh");
+            pstm.execute();
+            System.out.println("data updated");
             conn.close();
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
+
+//    Read
+    public void readData() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/vansh";
+            String userName = "root";
+            String password = "Vansh@2610";
+            Connection conn = DriverManager.getConnection(url, userName, password);
+            String query = "SELECT * from student";
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while(rs.next()) {
+                System.out.println("id = " + rs.getInt(1));
+                System.out.println("id = " + rs.getString(2));
+                System.out.println("id = " + rs.getString(3));
+                System.out.println();
+            }
+            System.out.println("Data Read");
+            conn.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteData() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/vansh";
+            String userName = "root";
+            String password = "Vansh@2610";
+            Connection conn = DriverManager.getConnection(url, userName, password);
+            Statement stm = conn.createStatement();
+
+            String query = "DELETE FROM student WHERE sid = " + 1;
+            int rowsAffected = stm.executeUpdate(query);
+
+            if (rowsAffected > 0) {
+                System.out.println("Deleted " + rowsAffected + " row(s) successfully.");
+            } else {
+                System.out.println("No matching student found with sid: " + 1);
+            }
+
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

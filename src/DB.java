@@ -3,7 +3,12 @@ public class DB {
         Student st = new Student();
 //        st.createDB();
 //        st.createTable();
+
+//        CRUD
+
 //        st.createData();
-        st.updateData();
+//        st.updateData();
+//        st.readData();
+        st.deleteData();
     }
 }
